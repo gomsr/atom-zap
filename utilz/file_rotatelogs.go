@@ -1,7 +1,7 @@
-package internal
+package utilz
 
 import (
-	config "github.com/micro-services-roadmap/atom-zap/config"
+	config "github.com/gomsr/atom-zap/configz"
 	"os"
 
 	"go.uber.org/zap/zapcore"

@@ -1,6 +1,6 @@
-module github.com/micro-services-roadmap/atom-zap
+module github.com/gomsr/atom-zap
 
-go 1.23.8
+go 1.23.1
 
 require go.uber.org/zap v1.27.0
 

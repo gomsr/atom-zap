@@ -1,4 +1,4 @@
-package config
+package configz
 
 import (
 	"go.uber.org/zap/zapcore"

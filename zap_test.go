@@ -1,12 +1,12 @@
 package zapx
 
 import (
-	"github.com/micro-services-roadmap/atom-zap/config"
+	"github.com/gomsr/atom-zap/configz"
 	"testing"
 )
 
 func TestZap(t *testing.T) {
-	zap := config.Zap{
+	zap := configz.Zap{
 		Level:         "info",
 		Format:        "json",
 		Prefix:        "[kit-logger]",

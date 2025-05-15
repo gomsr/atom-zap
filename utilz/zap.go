@@ -1,7 +1,7 @@
-package internal
+package utilz
 
 import (
-	"github.com/micro-services-roadmap/atom-zap/config"
+	"github.com/gomsr/atom-zap/configz"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,7 +11,7 @@ var Zap = new(_zap)
 type _zap struct{}
 
 // GetEncoder 获取 zapx-core.Encoder
-func (z *_zap) GetEncoder(config config.Zap) zapcore.Encoder {
+func (z *_zap) GetEncoder(config configz.Zap) zapcore.Encoder {
 	if config.Format == "json" {
 		return zapcore.NewJSONEncoder(z.GetEncoderConfig(config))
 	}
@@ -19,7 +19,7 @@ func (z *_zap) GetEncoder(config config.Zap) zapcore.Encoder {
 }
 
 // GetEncoderConfig 获取zapcore.EncoderConfig
-func (z *_zap) GetEncoderConfig(config config.Zap) zapcore.EncoderConfig {
+func (z *_zap) GetEncoderConfig(config configz.Zap) zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		MessageKey:     "message",
 		LevelKey:       "level",
@@ -36,13 +36,13 @@ func (z *_zap) GetEncoderConfig(config config.Zap) zapcore.EncoderConfig {
 }
 
 // GetEncoderCore 获取Encoder的 zapcore.Core
-func (z *_zap) GetEncoderCore(config config.Zap, l zapcore.Level, level zap.LevelEnablerFunc) zapcore.Core {
+func (z *_zap) GetEncoderCore(config configz.Zap, l zapcore.Level, level zap.LevelEnablerFunc) zapcore.Core {
 	writer := FileRotatelogs.GetWriteSyncer(config, l.String()) // 日志分割
 	return zapcore.NewCore(z.GetEncoder(config), writer, level)
 }
 
 // GetZapCores 根据配置文件的Level获取 []zapcore.Core
-func (z *_zap) GetZapCores(config config.Zap) []zapcore.Core {
+func (z *_zap) GetZapCores(config configz.Zap) []zapcore.Core {
 	cores := make([]zapcore.Core, 0, 7)
 	for level := config.TransportLevel(); level <= zapcore.FatalLevel; level++ {
 		cores = append(cores, z.GetEncoderCore(config, level, z.GetLevelPriority(level)))

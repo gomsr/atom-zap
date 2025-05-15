@@ -2,9 +2,8 @@ package zapx
 
 import (
 	"fmt"
-	"github.com/micro-services-roadmap/atom-zap/config"
-	"github.com/micro-services-roadmap/atom-zap/internal"
-	"github.com/micro-services-roadmap/atom-zap/util"
+	"github.com/gomsr/atom-zap/configz"
+	"github.com/gomsr/atom-zap/utilz"
 	"os"
 
 	"go.uber.org/zap"
@@ -12,13 +11,13 @@ import (
 )
 
 // Zap 获取 zapx.Logger
-func Zap(config config.Zap) (logger *zap.Logger) {
-	if ok, _ := util.PathExists(config.Director); !ok { // 判断是否有Director文件夹
+func Zap(config configz.Zap) (logger *zap.Logger) {
+	if ok, _ := utilz.PathExists(config.Director); !ok { // 判断是否有Director文件夹
 		fmt.Printf("create %v directory\n", config.Director)
 		_ = os.Mkdir(config.Director, os.ModePerm)
 	}
 
-	cores := internal.Zap.GetZapCores(config)
+	cores := utilz.Zap.GetZapCores(config)
 	logger = zap.New(zapcore.NewTee(cores...))
 
 	if config.ShowLine {
@@ -29,7 +28,7 @@ func Zap(config config.Zap) (logger *zap.Logger) {
 }
 
 func NewZap() (logger *zap.Logger) {
-	return Zap(config.Zap{
+	return Zap(configz.Zap{
 		Format: "json",
 	})
 }
